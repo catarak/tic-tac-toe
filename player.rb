@@ -31,6 +31,8 @@ class ComputerPlayer
 
   def initialize
     super("Computer")
+    #initialze probabilities board
+    @probabilities_board = Board.new
   end
 
 	def move

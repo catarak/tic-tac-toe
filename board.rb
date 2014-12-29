@@ -1,7 +1,11 @@
 class Board
   attr_accessor :board
-  def initialize
-    @board = *(1..9).collect { |x| x.to_s }
+  def initialize(values=position_numbers)
+    @board = values
+  end
+
+  def position_numbers
+    return *(1..9).collect { |x| x.to_s }
   end
 
   #this isn't super pretty, I tried to find a way to do it with
