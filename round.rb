@@ -58,14 +58,13 @@ class Round
   end
 
   def over?
-    if self.num_moves < 5
-    	return false
-    #if it is a DRAW, set winner to nil
-    elsif self.num_moves == 9 
+    return false if self.num_moves < 5
+
+    if self.num_moves == 9 
     	self.current_player = nil
-    	return true
+    	true
     else 
-    	return self.board.has_winner?
+    	self.board.has_winner?
     end
   end
 
