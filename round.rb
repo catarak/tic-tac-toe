@@ -1,14 +1,8 @@
-#!/usr/bin/env ruby
-
-# Cassie Tarakajian
-# 08/20/2014
-# ctarakajian@gmail.com
-
 require_relative 'player'
 require_relative 'board'
 
 class Round
-	attr_accessor :winner
+	attr_accessor :winner, :current_player, :first_player, :second_player, :board, :num_moves
 
   def initialize(first_player, second_player)
     @board = Board.new
@@ -21,53 +15,57 @@ class Round
   
   def run!
     while true
-    	if @current_player.class.name != "ComputerPlayer"
-    	  @board.print_board
+    	if self.current_player.class.name != "ComputerPlayer"
+    	  print board
       end
 
     	move = get_move(@current_player)
       place_move(move, @current_player)
 
       if over?
-      	@board.print_board
+      	print board
         break
       end
       change_current_player
     end
     
     #set winner
-    @winner = @current_player
+    self.winner = self.current_player
   end
 
   def place_move(move, player)
-    @board.set(move, player.mark)
-    @num_moves += 1
+    self.board.set(move, player.mark)
+    increment_num_moves
+  end
+
+  def increment_num_moves
+    self.num_moves += 1
   end
 
   def get_move(player)
     move = 0
-    while !@board.is_valid(move = player.get_input) 
+    while !self.board.is_valid?(move = player.move) 
     end
-    return move
+    move
   end
 
   def change_current_player
-    if @current_player == @first_player
-      @current_player = @second_player
+    if self.current_player == self.first_player
+      self.current_player = self.second_player
     else
-    	@current_player = @first_player
+    	self.current_player = self.first_player
     end
   end
 
   def over?
-    if @num_moves < 5
+    if self.num_moves < 5
     	return false
     #if it is a DRAW, set winner to nil
-    elsif @num_moves == 9 
-    	@current_player = nil
+    elsif self.num_moves == 9 
+    	self.current_player = nil
     	return true
     else 
-    	return @board.has_winner?
+    	return self.board.has_winner?
     end
   end
 

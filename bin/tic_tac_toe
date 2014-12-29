@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require_relative '../option_parser'
+require_relative '../tic_tac_toe'
+
+#### MAIN ####
+parser = TicTacToeOptionParser.new
+parser.parse!
+game = TicTacToe.new(parser.options)
+game.run!

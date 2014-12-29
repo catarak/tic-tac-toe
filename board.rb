@@ -1,57 +1,44 @@
-#!/usr/bin/env ruby
-
-# Cassie Tarakajian
-# 08/20/2014
-# ctarakajian@gmail.com
-
 class Board
+  attr_accessor :board
   def initialize
     @board = *(1..9).collect { |x| x.to_s }
   end
 
   #this isn't super pretty, I tried to find a way to do it with
   #a block but it was even messier
-  def print_board
-    print "      |     |     \n"
-    print "   #{@board[0]}  |  #{@board[1]}  |  #{@board[2]}  \n"
-    print " _ _ _|_ _ _|_ _ _\n"
-    print "      |     |     \n"
-    print "   #{@board[3]}  |  #{@board[4]}  |  #{@board[5]}  \n"
-    print " _ _ _|_ _ _|_ _ _\n"
-    print "      |     |     \n"
-    print "   #{@board[6]}  |  #{@board[7]}  |  #{@board[8]}  \n"
-    print "      |     |     \n"
+  def to_s
+    "      |     |     \n" + 
+    "   #{self.board[0]}  |  #{self.board[1]}  |  #{self.board[2]}  \n" +
+    " _ _ _|_ _ _|_ _ _\n" +
+    "      |     |     \n" + 
+    "   #{self.board[3]}  |  #{self.board[4]}  |  #{self.board[5]}  \n" +
+    " _ _ _|_ _ _|_ _ _\n" +
+    "      |     |     \n" +
+    "   #{self.board[6]}  |  #{self.board[7]}  |  #{self.board[8]}  \n" +
+    "      |     |     \n" 
   end
 
   def set(index, mark)
-  	@board[index] = mark
+  	self.board[index] = mark
   end
 
   def get(index)
-  	return @board[index]
+  	return self.board[index]
   end
 
-  def is_valid(index)
-    if @board[index] == 'X' || @board[index] == 'O'
-      return false
-    else
-    	return true
-    end   
+  def is_valid?(index)
+    self.board[index] != 'X' && self.board[index] != 'O'  
   end
 
   #is there a better way to do this
   def has_winner?
-    if @board[0] == @board[1] && @board[1] == @board[2] ||
-       @board[3] == @board[4] && @board[4] == @board[5] ||
-       @board[6] == @board[7] && @board[7] == @board[8] ||
-       @board[0] == @board[3] && @board[3] == @board[6] ||
-       @board[1] == @board[4] && @board[4] == @board[7] ||
-       @board[2] == @board[5] && @board[5] == @board[8] ||
-       @board[0] == @board[4] && @board[4] == @board[8] ||
-       @board[2] == @board[4] && @board[4] == @board[6]
-      return true
-    else
-    	return false
-    end
+    self.board[0] == self.board[1] && self.board[1] == self.board[2] ||
+    self.board[3] == self.board[4] && self.board[4] == self.board[5] ||
+    self.board[6] == self.board[7] && self.board[7] == self.board[8] ||
+    self.board[0] == self.board[3] && self.board[3] == self.board[6] ||
+    self.board[1] == self.board[4] && self.board[4] == self.board[7] ||
+    self.board[2] == self.board[5] && self.board[5] == self.board[8] ||
+    self.board[0] == self.board[4] && self.board[4] == self.board[8] ||
+    self.board[2] == self.board[4] && self.board[4] == self.board[6]
   end
 end

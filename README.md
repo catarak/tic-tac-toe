@@ -5,7 +5,7 @@ specifications. If there is only one player, the opponent is a computer,
 whose AI isn't very good since it guesses positions randomly.
 
 To play:
-$ ./tic_tac_toe.rb -m [single, multiplayer]
+$ ./bin/tic_tac_toe -m [single, multiplayer]
 
 Other options are prompted during game play. 
 

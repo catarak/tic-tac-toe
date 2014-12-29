@@ -1,21 +1,20 @@
-#!/usr/bin/env ruby
-
-# Cassie Tarakajian
-# 08/20/2014
-# ctarakajian@gmail.com
-
 require 'optparse'
 require_relative 'player'
 require_relative 'board'
 require_relative 'round'
 
 class TicTacToe
+  attr_accessor :player1, :player2, :options, :board, :ties, :first, :second
   def initialize(options)
     @options = options
     @board = Board.new
     @ties = 0
 
-    #initialize mode
+    initialize_mode(options)
+    initialize_player_order
+  end
+
+  def initialize_mode(options)
     if options[:mode] == :single
       puts "Please enter your name:"
       name = gets.chomp
@@ -29,14 +28,11 @@ class TicTacToe
       name2 = gets.chomp
       @player2 = HumanPlayer.new(name2)
     end
-
-    #initialize player order
-    @first = @player1
-    @second = @player2
-    set_turn_order
   end
 
-  def set_turn_order
+  def initialize_player_order
+    @first = @player1
+    @second = @player2
     puts "Who goes first, #{@player1.name} or #{@player2.name}?"
     name = gets.chomp
     if name == @player1.name
@@ -52,12 +48,15 @@ class TicTacToe
     end
   end
 
+  def score_to_s
+    "Current scores are...\n" + 
+    "#{@player1.name}: #{@player1.score}\n" +
+    "#{@player2.name}: #{@player2.score}\n" +
+    "Ties: #{@ties}\n\n"
+  end
+
   def print_score
-    puts "Current scores are..."
-    puts "#{@player1.name}: #{@player1.score}"
-    puts "#{@player2.name}: #{@player2.score}"
-    puts "Ties: #{@ties}"
-    puts ""
+    print score_to_s
   end
 
   def run!
@@ -108,45 +107,3 @@ class TicTacToe
     end
   end
 end
-
-class TicTacToeOptionParser
-  attr_reader :options
-  def initialize
-    @options = {}
-    @parser = OptionParser.new do |opts|
-      opts.banner = "Usage: tic_tac_toe.rb [options]"
-
-      opts.on("-m", "--mode [MODE]", [:single, :multiplayer], "Select player mode (single, multiplayer)") do |m|
-        options[:mode] = m
-      end
-
-      opts.on('-h', '--help', 'Display this screen') do
-        puts opts
-        exit
-      end
-    end
-  end
-
-  def parse!
-    begin
-      @parser.parse!
-      mandatory = [:mode]                                         
-      missing = mandatory.select{ |param| options[param].nil? }        
-      if not missing.empty?                                            
-        puts "Missing options: #{missing.join(', ')}"                  
-        puts @parser                                                 
-        exit                                                           
-      end
-    rescue OptionParser::InvalidOption, OptionParser::MissingArgument 
-      puts $!.to_s                                                           
-      puts @parser                                                          
-      exit
-    end
-  end
-end
-
-#### MAIN ####
-parser = TicTacToeOptionParser.new
-parser.parse!
-game = TicTacToe.new(parser.options)
-game.run!

@@ -1,10 +1,4 @@
-#!/usr/bin/env ruby
-
-# Cassie Tarakajian
-# 08/20/2014
-# ctarakajian@gmail.com
-
-module Player
+module Playable
   attr_accessor :player_type, :score, :name, :mark
 
   def initialize(name)
@@ -15,15 +9,15 @@ module Player
 end
 
 class HumanPlayer
-	include Player
-  def get_input
+	include Playable
+  def move
     #this does not sanitize or check for errors in input
-    puts "#{@name}, please choose a position, or type 'quit' to quit: "
-    input = gets.chomp
+    puts "#{self.name}, please choose a position, or type 'quit' to quit: "
+    input = gets.strip
     if input == "quit"
       exit
     else 
-    	return input.to_i - 1 #need to normalize position
+    	input.to_i - 1 #need to normalize position
     	                      #this also returns an invalid move if 
     	                      #user inputs a random string
     end
@@ -31,12 +25,15 @@ class HumanPlayer
 end
 
 #The AI for this is pretty dumb right now
+#TODO actually make this AI work
 class ComputerPlayer
-	include Player
+	include Playable
+
   def initialize
     super("Computer")
   end
-	def get_input
-    return Random.rand(9)
+
+	def move
+    Random.rand(9)
   end
 end
