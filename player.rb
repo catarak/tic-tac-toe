@@ -1,4 +1,4 @@
-module Playable
+class Player
   attr_accessor :player_type, :score, :name, :mark
 
   def initialize(name)
@@ -8,9 +8,8 @@ module Playable
   end
 end
 
-class HumanPlayer
-	include Playable
-  def move
+class HumanPlayer < Player
+  def move(board)
     #this does not sanitize or check for errors in input
     puts "#{self.name}, please choose a position, or type 'quit' to quit: "
     input = gets.strip
@@ -26,16 +25,21 @@ end
 
 #The AI for this is pretty dumb right now
 #TODO actually make this AI work
-class ComputerPlayer
-	include Playable
+class ComputerPlayer < Player
+  PROBABILITIES = [3, 2, 3, 2, 4, 2, 3, 2, 3]
 
   def initialize
     super("Computer")
     #initialze probabilities board
-    @probabilities_board = Board.new
+    @prob_board = Board.new(PROBABILITIES)
   end
 
-	def move
+	def move(board)
+    #recalculate probabilities
+    #choose spot based on probability
+    #check other player wins
+    #check for self wins
+    #if neither, pick highest probability spot
     Random.rand(9)
   end
 end

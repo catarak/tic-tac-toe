@@ -44,7 +44,7 @@ class Round
 
   def get_move(player)
     move = 0
-    while !self.board.is_valid?(move = player.move) 
+    while !self.board.is_valid?(move = player.move(self.board)) 
     end
     move
   end
