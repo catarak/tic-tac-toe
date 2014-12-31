@@ -79,7 +79,6 @@ class ComputerPlayer < Player
       if values.select{ |value| value == self.mark}.length == 2
         possible_move = values.select{ |value| value != self.mark}.first
         if possible_move != self.opponent_mark
-          binding.pry
           return row[values.index(possible_move)]
         end
       end
@@ -88,6 +87,16 @@ class ComputerPlayer < Player
   end
 
   def find_blocking_move(board)
+    #there is most definitely a better way to do this
+    ROWS.each do |row|
+      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])] 
+      if values.select{ |value| value == self.opponent_mark}.length == 2
+        possible_move = values.select{ |value| value != self.opponent_mark}.first
+        if possible_move != self.mark
+          return row[values.index(possible_move)]
+        end
+      end
+    end
     nil
   end
 end
