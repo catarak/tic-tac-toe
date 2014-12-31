@@ -35,6 +35,28 @@ class Board
     self.board[index] != 'X' && self.board[index] != 'O'  
   end
 
+  def center_index
+    return 4
+  end
+
+  def corner_indices
+    return [0, 2, 6, 8]
+  end
+
+  def opposite_corner_index(index)
+    return nil if !self.corner_indices.include?(index)
+    case index
+    when 0
+      8
+    when 2
+      6
+    when 6
+      2
+    when 8
+      0
+    end
+  end
+
   #is there a better way to do this
   def has_winner?
     self.board[0] == self.board[1] && self.board[1] == self.board[2] ||
@@ -46,4 +68,5 @@ class Board
     self.board[0] == self.board[4] && self.board[4] == self.board[8] ||
     self.board[2] == self.board[4] && self.board[4] == self.board[6]
   end
+
 end

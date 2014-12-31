@@ -63,6 +63,15 @@ class ComputerPlayer < Player
     #fork move
     #block opponent fork move
 
+    #center
+    move = find_center_move(board)
+    return move if !move.nil?
+
+    #opposite corner
+    move = find_opposite_corner(board)
+    return move if !move.nil?
+
+
     Random.rand(9)
   end
 
@@ -116,7 +125,19 @@ class ComputerPlayer < Player
   end
 
   def find_center_move(board)
-    if board[4]
+    if board.valid?(board.center_index)
+      return board.center_index
+    end
+  end
+
+  def find_opposite_corner(board)
+    board.corner_indices.each do |index|
+      if board.get(index) == self.opponent_mark
+        opposite_corner_index = board.opposite_corner_index(index)
+        return opposite_corner_index if board.valid?(opposite_corner_index)
+      end
+    end
+    nil
   end
 
 
