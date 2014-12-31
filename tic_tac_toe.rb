@@ -4,10 +4,9 @@ require_relative 'board'
 require_relative 'round'
 
 class TicTacToe
-  attr_accessor :player1, :player2, :options, :board, :ties, :first, :second
+  attr_accessor :player1, :player2, :options, :ties, :first, :second
   def initialize(options)
     @options = options
-    @board = Board.new
     @ties = 0
 
     initialize_mode(options)
