@@ -1,3 +1,5 @@
+require 'pry'
+
 class Player
   attr_accessor :player_type, :score, :name, :mark
   attr_reader :mark, :opponent_mark
@@ -71,10 +73,16 @@ class ComputerPlayer < Player
   end
 
   def find_winning_move(board)
-    #iterate through all rows
-    #check if it contains two or more of 
+    #there is most definitely a better way to do this
     ROWS.each do |row|
-      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])]
+      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])] 
+      if values.select{ |value| value == self.mark}.length == 2
+        possible_move = values.select{ |value| value != self.mark}.first
+        if possible_move != self.opponent_mark
+          binding.pry
+          return row[values.index(possible_move)]
+        end
+      end
     end
     nil
   end
