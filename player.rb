@@ -54,10 +54,10 @@ class ComputerPlayer < Player
   end
 
 	def move(board)
-    # move = find_winning_move(board)
-    # return move if !move.nil?
-    # move = find_blocking_move(board)
-    # return move if !move.nil?
+    move = find_winning_move(board)
+    return move if !move.nil?
+    move = find_blocking_move(board)
+    return move if !move.nil?
 
     #strategy and all of that shit
     Random.rand(9)
@@ -74,7 +74,12 @@ class ComputerPlayer < Player
     #iterate through all rows
     #check if it contains two or more of 
     ROWS.each do |row|
-      values = [board[row[0]], board[row[1]], board[row[2]]]
+      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])]
     end
+    nil
+  end
+
+  def find_blocking_move(board)
+    nil
   end
 end
