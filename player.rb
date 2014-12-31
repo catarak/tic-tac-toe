@@ -38,6 +38,7 @@ end
 #The AI for this is pretty dumb right now
 #TODO actually make this AI work
 class ComputerPlayer < Player
+  #this should be a property of the board, for sure. 
   ROWS = [[0,1,2],
           [3,4,5],
           [6,7,8],
@@ -58,6 +59,10 @@ class ComputerPlayer < Player
     return move if !move.nil?
 
     #strategy and all of that shit
+
+    #fork move
+    #block opponent fork move
+
     Random.rand(9)
   end
 
@@ -89,7 +94,6 @@ class ComputerPlayer < Player
     nil
   end
 
-  #this allows you to create a move
   def find_fork_move(board)
     #iterate over all groups of two overlapping rows
     #ugh how do you do that
@@ -101,8 +105,18 @@ class ComputerPlayer < Player
           values.select{ |value| value == self.opponent_mark}.length == 0
         #cool so now you might have a fork
         #get row overlaps
+        overlaps = []
+        overlaps.each do |overlap|
+          #if overlap contains one of mark
+          #place a mark in overlapping position
+          #how to find overlapping position? return it with overlapping row?
+        end
       end
     end
+  end
+
+  def find_center_move(board)
+    if board[4]
   end
 
 

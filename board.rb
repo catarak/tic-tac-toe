@@ -31,7 +31,7 @@ class Board
     return *(1..9).collect { |x| x.to_s }
   end
 
-  def is_valid?(index)
+  def valid?(index)
     self.board[index] != 'X' && self.board[index] != 'O'  
   end
 
