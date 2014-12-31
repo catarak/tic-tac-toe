@@ -1,6 +1,10 @@
 class Board
   attr_accessor :board
 
+  def initialize
+    @board = position_numbers
+  end
+
   #this isn't super pretty, I tried to find a way to do it with
   #a block but it was even messier
   def to_s
@@ -23,19 +27,6 @@ class Board
   	return self.board[index]
   end
 
-end
-
-class ProbabilityBoard
-  def initialize(probabilities)
-    @board = probabilities
-  end
-end
-
-class PositionBoard < Board
-  def initialize
-    @board = position_numbers
-  end
-
   def position_numbers
     return *(1..9).collect { |x| x.to_s }
   end
@@ -55,5 +46,4 @@ class PositionBoard < Board
     self.board[0] == self.board[4] && self.board[4] == self.board[8] ||
     self.board[2] == self.board[4] && self.board[4] == self.board[6]
   end
-
 end

@@ -38,7 +38,6 @@ end
 #The AI for this is pretty dumb right now
 #TODO actually make this AI work
 class ComputerPlayer < Player
-  PROBABILITIES = [3, 2, 3, 2, 4, 2, 3, 2, 3]
   ROWS = [[0,1,2],
           [3,4,5],
           [6,7,8],
@@ -50,9 +49,6 @@ class ComputerPlayer < Player
 
   def initialize
     super("Computer")
-    #initialze probabilities board
-    @prob_board = ProbabilityBoard.new(PROBABILITIES)
-    #or should this be a property of the board?
   end
 
 	def move(board)
@@ -63,13 +59,6 @@ class ComputerPlayer < Player
 
     #strategy and all of that shit
     Random.rand(9)
-  end
-
-  def calculate_probabilities(board)
-    #check each row/column
-    #if row/column contains opponent mark, probabilities in that row are zero
-    #record x's in probability board?
-    #do this in the board itself?
   end
 
   def find_winning_move(board)
@@ -99,4 +88,22 @@ class ComputerPlayer < Player
     end
     nil
   end
+
+  #this allows you to create a move
+  def find_fork_move(board)
+    #iterate over all groups of two overlapping rows
+    #ugh how do you do that
+    #okay maybe it's better to find a row that contains your mark but is empty and find overlapping rows
+    #yes that is better
+    ROWS.each do |row|
+      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])] 
+      if values.select{ |value| value == self.mark}.length == 1 && 
+          values.select{ |value| value == self.opponent_mark}.length == 0
+        #cool so now you might have a fork
+        #get row overlaps
+      end
+    end
+  end
+
+
 end

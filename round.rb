@@ -5,7 +5,7 @@ class Round
 	attr_accessor :winner, :current_player, :first_player, :second_player, :board, :num_moves
 
   def initialize(first_player, second_player)
-    @board = PositionBoard.new
+    @board = Board.new
     @first_player = first_player
     @second_player = second_player
     @num_moves = 0
