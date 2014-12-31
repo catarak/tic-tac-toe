@@ -71,6 +71,13 @@ class ComputerPlayer < Player
     move = find_opposite_corner(board)
     return move if !move.nil?
 
+    #empty corner
+    move = find_empty_corner(board)
+    return move if !move.nil?
+
+    #empty side
+    move = find_empty_side(board)
+    return move if !move.nil?
 
     Random.rand(9)
   end
@@ -138,6 +145,20 @@ class ComputerPlayer < Player
       end
     end
     nil
+  end
+
+  def find_empty_corner(board)
+    #TODO make this random :D
+    board.corner_indices.each do |index|
+      return index if board.valid?(index)
+    end
+  end
+
+  def find_empty_side(board)
+    #TODO make this random :D
+    board.side_indices.each do |index|
+      return index if board.valid?(index)
+    end
   end
 
 

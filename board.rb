@@ -43,6 +43,11 @@ class Board
     return [0, 2, 6, 8]
   end
 
+  def side_indices
+    return [1, 3, 5, 7]
+  end
+
+  #I don't like this, it's ugly!
   def opposite_corner_index(index)
     return nil if !self.corner_indices.include?(index)
     case index
