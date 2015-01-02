@@ -58,27 +58,12 @@ class Board
     [self.get(row[0]), self.get(row[1]), self.get(row[2])]
   end
 
-  #make this only_two_in_a_row?
-  def two_in_a_row?(row, mark)
-    values = self.values(row)
-    values.select{ |value| value == mark}.length == 2
-  end
-
-  def open_position_in_row?(row)
-    row.any?{ |index| self.valid?(index) }
-  end
-
   def only_two_in_a_row?(row, mark)
-    two_in_a_row?(row, mark) && open_position_in_row?(row)
+    num_mark_in_row(row, mark) == 2 && num_open_positions(row) == 1
   end
 
   def only_one_in_a_row?(row, mark)
-
-  end
-
-  def one_in_a_row(row, mark)
-    values = self.values(row)
-    values.select{ |value| value == mark}.length == 1
+    num_mark_in_row(row, mark) == 1 && num_open_positions(row) == 2
   end
 
   def get_open_position(row)
@@ -87,6 +72,11 @@ class Board
 
   def num_open_positions(row)
     row.select{ |index| self.valid?(index) }.length
+  end
+
+  def num_mark_in_row(row, mark)
+    values = self.values(row)
+    values.select{ |value| value == mark }.length
   end
 
   def overlapping_rows(row)

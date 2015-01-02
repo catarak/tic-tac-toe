@@ -53,9 +53,11 @@ class ComputerPlayer < Player
     #strategy and all of that shit
 
     #fork move
-    move = find_fork_move(board)
+    move = find_winning_fork_move(board)
     return move if !move.nil?
     #block opponent fork move
+    move = find_blocking_fork_move(board)
+    return move if !move.nil?
 
     #center
     move = find_center_move(board)
@@ -93,31 +95,36 @@ class ComputerPlayer < Player
     nil
   end
 
-  #I KNOW I KNOW I KNOW THIS IS SUPER MESSY DEAL W IT FOR NOW
-  def find_fork_move(board)
-    #iterate over all groups of two overlapping rows
-    #ugh how do you do that
-    #okay maybe it's better to find a row that contains your mark but is empty and find overlapping rows
-    #yes that is better
+  def find_winning_fork_move(board)
     board.rows.each do |row|
-      values = board.values(row)
-      #check if row is empty except for your mark, because that's your chance for a fork 
-      if values.select{ |value| value == self.mark}.length == 1 && 
-          values.select{ |value| value == self.opponent_mark}.length == 0
-        #cool so now you might have a fork
-        #get row overlaps
+      if board.only_one_in_a_row?(row, self.mark)
         overlaps = board.overlapping_rows(row)
-        #binding.pry
         overlaps.each do |overlap|
-          overlap_values = board.values(overlap)
-          if overlap_values.select{ |value| value == self.mark}.length == 1 && 
-            overlap_values.select{ |value| value == self.opponent_mark}.length == 0
-            if overlap[overlap_values.index(self.mark)] != row[values.index(self.mark)]
-              return (overlap & row).first
+          if board.only_one_in_a_row?(overlap, self.mark)
+            overlapping_move = (overlap & row).first
+            return overlapping_move if board.valid?(overlapping_move)
+          end
+        end
+      end
+    end
+    nil
+  end
+
+  def find_blocking_fork_move(board)
+    board.rows.each do |row|
+      if board.only_one_in_a_row?(row, self.opponent_mark)
+        overlaps = board.overlapping_rows(row)
+        overlaps.each do |overlap|
+          if board.only_one_in_a_row?(overlap, self.opponent_mark)
+            #this selection here has to be different
+            #choose blocking spot that is not overlap randomly
+            overlapping_move = (overlap & row).first
+            if board.valid?(overlapping_move)
+              possible_moves = row.dup.concat(overlap).uniq.select{ |move| board.valid?(move) && move != overlapping_move}
+              binding.pry
+              return possible_moves.sample
             end
-          #if overlap contains one of mark
-          #place a mark in overlapping position
-          #how to find overlapping position? return it with overlapping row?
+            #return overlapping_move if board.valid?(overlapping_move)
           end
         end
       end
