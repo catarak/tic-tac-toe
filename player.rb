@@ -106,10 +106,10 @@ class ComputerPlayer < Player
           values.select{ |value| value == self.opponent_mark}.length == 0
         #cool so now you might have a fork
         #get row overlaps
-        overlaps = board.rows.select{ |overlap| (overlap & row).length > 0 && overlap != row }
+        overlaps = board.overlapping_rows(row)
         #binding.pry
         overlaps.each do |overlap|
-          overlap_values = [board.get(overlap[0]), board.get(overlap[1]), board.get(overlap[2])]
+          overlap_values = board.values(overlap)
           if overlap_values.select{ |value| value == self.mark}.length == 1 && 
             overlap_values.select{ |value| value == self.opponent_mark}.length == 0
             if overlap[overlap_values.index(self.mark)] != row[values.index(self.mark)]

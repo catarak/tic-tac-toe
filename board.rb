@@ -58,6 +58,7 @@ class Board
     [self.get(row[0]), self.get(row[1]), self.get(row[2])]
   end
 
+  #make this only_two_in_a_row?
   def two_in_a_row?(row, mark)
     values = self.values(row)
     values.select{ |value| value == mark}.length == 2
@@ -71,16 +72,19 @@ class Board
     row.select{ |index| self.valid?(index) }.first
   end
 
-  #is there a better way to do this
+  def overlapping_rows(row)
+    self.rows.select{ |overlap| (overlap & row).length > 0 && overlap != row }
+  end
+
+  def three_in_a_row?(row)
+    self.values(row).uniq.length == 1
+  end
+
   def has_winner?
-    self.board[0] == self.board[1] && self.board[1] == self.board[2] ||
-    self.board[3] == self.board[4] && self.board[4] == self.board[5] ||
-    self.board[6] == self.board[7] && self.board[7] == self.board[8] ||
-    self.board[0] == self.board[3] && self.board[3] == self.board[6] ||
-    self.board[1] == self.board[4] && self.board[4] == self.board[7] ||
-    self.board[2] == self.board[5] && self.board[5] == self.board[8] ||
-    self.board[0] == self.board[4] && self.board[4] == self.board[8] ||
-    self.board[2] == self.board[4] && self.board[4] == self.board[6]
+    self.rows.each do |row|
+      return true if three_in_a_row?(row)
+    end
+    false
   end
 
   def opposite_mark(mark)
