@@ -116,15 +116,12 @@ class ComputerPlayer < Player
         overlaps = board.overlapping_rows(row)
         overlaps.each do |overlap|
           if board.only_one_in_a_row?(overlap, self.opponent_mark)
-            #this selection here has to be different
-            #choose blocking spot that is not overlap randomly
             overlapping_move = (overlap & row).first
             if board.valid?(overlapping_move)
+              #confirmed that an opponent fork, is in fact, possible
               possible_moves = row.dup.concat(overlap).uniq.select{ |move| board.valid?(move) && move != overlapping_move}
-              binding.pry
               return possible_moves.sample
             end
-            #return overlapping_move if board.valid?(overlapping_move)
           end
         end
       end
