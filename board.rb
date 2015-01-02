@@ -35,7 +35,8 @@ class Board
   end
 
   def valid?(index)
-    self.board[index] != 'X' && self.board[index] != 'O'  
+    return false if index.nil?
+    !self.board[index].nil? && self.board[index] != 'X' && self.board[index] != 'O'  
   end
 
   def center_index

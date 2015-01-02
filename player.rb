@@ -146,10 +146,14 @@ class ComputerPlayer < Player
   end
 
   def find_empty_corner(board)
-    #TODO make this random :D
-    board.corner_indices.each do |index|
-      return index if board.valid?(index)
+    found_move = false
+    while !found_move
+      move = board.corner_indices.sample
+      if board.valid?(move)
+        found_move = true
+      end
     end
+    move
   end
 
   def find_empty_side(board)
