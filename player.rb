@@ -86,7 +86,7 @@ class ComputerPlayer < Player
 
   def find_two_in_a_row(board, mark)
     board.rows.each do |row|
-      if board.two_in_a_row?(row, mark) && board.open_position_in_row?(row)
+      if board.only_two_in_a_row?(row, mark)
         return board.get_open_position(row)
       end
     end

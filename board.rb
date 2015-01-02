@@ -68,6 +68,10 @@ class Board
     row.any?{ |index| self.valid?(index) }
   end
 
+  def only_two_in_a_row?(row, mark)
+    two_in_a_row?(row, mark) && open_position_in_row?(row)
+  end
+
   def get_open_position(row)
     row.select{ |index| self.valid?(index) }.first
   end
