@@ -61,6 +61,8 @@ class ComputerPlayer < Player
     #strategy and all of that shit
 
     #fork move
+    move = find_fork_move(board)
+    return move if !move.nil?
     #block opponent fork move
 
     #center
@@ -110,25 +112,37 @@ class ComputerPlayer < Player
     nil
   end
 
+  #I KNOW I KNOW I KNOW THIS IS SUPER MESSY DEAL W IT FOR NOW
   def find_fork_move(board)
     #iterate over all groups of two overlapping rows
     #ugh how do you do that
     #okay maybe it's better to find a row that contains your mark but is empty and find overlapping rows
     #yes that is better
     ROWS.each do |row|
-      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])] 
+      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])]
+      #check if row is empty except for your mark, because that's your chance for a fork 
       if values.select{ |value| value == self.mark}.length == 1 && 
           values.select{ |value| value == self.opponent_mark}.length == 0
         #cool so now you might have a fork
         #get row overlaps
-        overlaps = []
+        overlaps = ROWS.select{ |overlap| (overlap & row).length > 0 && overlap != row }
+        #binding.pry
         overlaps.each do |overlap|
+          overlap_values = [board.get(overlap[0]), board.get(overlap[1]), board.get(overlap[2])]
+          if overlap_values.select{ |value| value == self.mark}.length == 1 && 
+            overlap_values.select{ |value| value == self.opponent_mark}.length == 0
+            if overlap[overlap_values.index(self.mark)] != row[values.index(self.mark)]
+              binding.pry
+              return (overlap & row).first
+            end
           #if overlap contains one of mark
           #place a mark in overlapping position
           #how to find overlapping position? return it with overlapping row?
+          end
         end
       end
     end
+    nil
   end
 
   def find_center_move(board)

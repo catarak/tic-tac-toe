@@ -48,12 +48,6 @@ class Board
   end
 
   def opposite_corner_index(index)
-    OPPOSITE_CORNERS = {
-      0 => 8, 
-      2 => 6,
-      6 => 2, 
-      8 => 0
-    }
     OPPOSITE_CORNERS[index]
   end
 
@@ -69,4 +63,11 @@ class Board
     self.board[2] == self.board[4] && self.board[4] == self.board[6]
   end
 
+  private
+    OPPOSITE_CORNERS = {
+      0 => 8, 
+      2 => 6,
+      6 => 2, 
+      8 => 0
+    }
 end
