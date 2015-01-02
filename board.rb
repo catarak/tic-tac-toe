@@ -1,8 +1,11 @@
 class Board
   attr_accessor :board
+  attr_reader :rows
 
   def initialize
     @board = position_numbers
+    @rows = [[0,1,2], [3,4,5], [6,7,8], [0,3,6],
+             [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
   end
 
   #this isn't super pretty, I tried to find a way to do it with
@@ -49,6 +52,10 @@ class Board
 
   def opposite_corner_index(index)
     OPPOSITE_CORNERS[index]
+  end
+
+  def values(row)
+    [self.get(row[0]), self.get(row[1]), self.get(row[2])]
   end
 
   #is there a better way to do this

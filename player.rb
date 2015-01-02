@@ -38,20 +38,12 @@ end
 #The AI for this is pretty dumb right now
 #TODO actually make this AI work
 class ComputerPlayer < Player
-  #this should be a property of the board, for sure. 
-  ROWS = [[0,1,2],
-          [3,4,5],
-          [6,7,8],
-          [0,3,6],
-          [1,4,7],
-          [2,5,8],
-          [0,4,8],
-          [2,4,6]]
 
   def initialize
     super("Computer")
   end
 
+  #this should also be cleaned up
 	def move(board)
     move = find_winning_move(board)
     return move if !move.nil?
@@ -86,8 +78,8 @@ class ComputerPlayer < Player
 
   def find_winning_move(board)
     #there is most definitely a better way to do this
-    ROWS.each do |row|
-      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])] 
+    board.rows.each do |row|
+      values = board.values(row) 
       if values.select{ |value| value == self.mark}.length == 2
         possible_move = values.select{ |value| value != self.mark}.first
         if possible_move != self.opponent_mark
@@ -100,7 +92,7 @@ class ComputerPlayer < Player
 
   def find_blocking_move(board)
     #there is most definitely a better way to do this
-    ROWS.each do |row|
+    board.rows.each do |row|
       values = [board.get(row[0]), board.get(row[1]), board.get(row[2])] 
       if values.select{ |value| value == self.opponent_mark}.length == 2
         possible_move = values.select{ |value| value != self.opponent_mark}.first
@@ -118,14 +110,14 @@ class ComputerPlayer < Player
     #ugh how do you do that
     #okay maybe it's better to find a row that contains your mark but is empty and find overlapping rows
     #yes that is better
-    ROWS.each do |row|
+    board.rows.each do |row|
       values = [board.get(row[0]), board.get(row[1]), board.get(row[2])]
       #check if row is empty except for your mark, because that's your chance for a fork 
       if values.select{ |value| value == self.mark}.length == 1 && 
           values.select{ |value| value == self.opponent_mark}.length == 0
         #cool so now you might have a fork
         #get row overlaps
-        overlaps = ROWS.select{ |overlap| (overlap & row).length > 0 && overlap != row }
+        overlaps = board.rows.select{ |overlap| (overlap & row).length > 0 && overlap != row }
         #binding.pry
         overlaps.each do |overlap|
           overlap_values = [board.get(overlap[0]), board.get(overlap[1]), board.get(overlap[2])]
