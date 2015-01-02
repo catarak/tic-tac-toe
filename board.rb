@@ -58,6 +58,19 @@ class Board
     [self.get(row[0]), self.get(row[1]), self.get(row[2])]
   end
 
+  def two_in_a_row?(row, mark)
+    values = self.values(row)
+    values.select{ |value| value == mark}.length == 2
+  end
+
+  def open_position_in_row?(row)
+    row.any?{ |index| self.valid?(index) }
+  end
+
+  def get_open_position(row)
+    row.select{ |index| self.valid?(index) }.first
+  end
+
   #is there a better way to do this
   def has_winner?
     self.board[0] == self.board[1] && self.board[1] == self.board[2] ||
@@ -68,6 +81,10 @@ class Board
     self.board[2] == self.board[5] && self.board[5] == self.board[8] ||
     self.board[0] == self.board[4] && self.board[4] == self.board[8] ||
     self.board[2] == self.board[4] && self.board[4] == self.board[6]
+  end
+
+  def opposite_mark(mark)
+    mark == "X" ? "O" : "X"
   end
 
   private

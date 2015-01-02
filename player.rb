@@ -77,28 +77,18 @@ class ComputerPlayer < Player
   end
 
   def find_winning_move(board)
-    #there is most definitely a better way to do this
     board.rows.each do |row|
-      values = board.values(row) 
-      if values.select{ |value| value == self.mark}.length == 2
-        possible_move = values.select{ |value| value != self.mark}.first
-        if possible_move != self.opponent_mark
-          return row[values.index(possible_move)]
-        end
+      if board.two_in_a_row?(row, self.mark) && board.open_position_in_row?(row)
+        return board.get_open_position(row)
       end
     end
     nil
   end
 
   def find_blocking_move(board)
-    #there is most definitely a better way to do this
     board.rows.each do |row|
-      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])] 
-      if values.select{ |value| value == self.opponent_mark}.length == 2
-        possible_move = values.select{ |value| value != self.opponent_mark}.first
-        if possible_move != self.mark
-          return row[values.index(possible_move)]
-        end
+      if board.two_in_a_row?(row, self.opponent_mark) && board.open_position_in_row?(row)
+        return board.get_open_position(row)
       end
     end
     nil
@@ -111,7 +101,7 @@ class ComputerPlayer < Player
     #okay maybe it's better to find a row that contains your mark but is empty and find overlapping rows
     #yes that is better
     board.rows.each do |row|
-      values = [board.get(row[0]), board.get(row[1]), board.get(row[2])]
+      values = board.values(row)
       #check if row is empty except for your mark, because that's your chance for a fork 
       if values.select{ |value| value == self.mark}.length == 1 && 
           values.select{ |value| value == self.opponent_mark}.length == 0
@@ -124,7 +114,6 @@ class ComputerPlayer < Player
           if overlap_values.select{ |value| value == self.mark}.length == 1 && 
             overlap_values.select{ |value| value == self.opponent_mark}.length == 0
             if overlap[overlap_values.index(self.mark)] != row[values.index(self.mark)]
-              binding.pry
               return (overlap & row).first
             end
           #if overlap contains one of mark
