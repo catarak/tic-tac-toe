@@ -77,17 +77,16 @@ class ComputerPlayer < Player
   end
 
   def find_winning_move(board)
-    board.rows.each do |row|
-      if board.two_in_a_row?(row, self.mark) && board.open_position_in_row?(row)
-        return board.get_open_position(row)
-      end
-    end
-    nil
+    return find_two_in_a_row(board, self.mark)
   end
 
   def find_blocking_move(board)
+    return find_two_in_a_row(board, self.opponent_mark)
+  end
+
+  def find_two_in_a_row(board, mark)
     board.rows.each do |row|
-      if board.two_in_a_row?(row, self.opponent_mark) && board.open_position_in_row?(row)
+      if board.two_in_a_row?(row, mark) && board.open_position_in_row?(row)
         return board.get_open_position(row)
       end
     end
