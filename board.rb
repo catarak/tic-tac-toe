@@ -72,8 +72,21 @@ class Board
     two_in_a_row?(row, mark) && open_position_in_row?(row)
   end
 
+  def only_one_in_a_row?(row, mark)
+
+  end
+
+  def one_in_a_row(row, mark)
+    values = self.values(row)
+    values.select{ |value| value == mark}.length == 1
+  end
+
   def get_open_position(row)
     row.select{ |index| self.valid?(index) }.first
+  end
+
+  def num_open_positions(row)
+    row.select{ |index| self.valid?(index) }.length
   end
 
   def overlapping_rows(row)
