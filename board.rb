@@ -47,19 +47,14 @@ class Board
     return [1, 3, 5, 7]
   end
 
-  #I don't like this, it's ugly!
   def opposite_corner_index(index)
-    return nil if !self.corner_indices.include?(index)
-    case index
-    when 0
-      8
-    when 2
-      6
-    when 6
-      2
-    when 8
-      0
-    end
+    OPPOSITE_CORNERS = {
+      0 => 8, 
+      2 => 6,
+      6 => 2, 
+      8 => 0
+    }
+    OPPOSITE_CORNERS[index]
   end
 
   #is there a better way to do this
