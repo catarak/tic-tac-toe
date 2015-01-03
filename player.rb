@@ -22,15 +22,12 @@ end
 
 class HumanPlayer < Player
   def move(board)
-    #this does not sanitize or check for errors in input
-    puts "#{self.name}, please choose a position, or type 'quit' to quit: "
+    puts "#{self.name}, please choose a position, or enter 'quit' or 'q' to quit: "
     input = gets.strip
-    if input == "quit"
+    if input == "quit" || input == "q"
       exit
     else 
     	input.to_i - 1 #need to normalize position
-    	                      #this also returns an invalid move if 
-    	                      #user inputs a random string
     end
   end
 end

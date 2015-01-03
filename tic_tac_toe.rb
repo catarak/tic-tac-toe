@@ -30,15 +30,30 @@ class TicTacToe
   end
 
   def initialize_player_order
-    puts "Who goes first, #{self.player1.name} or #{self.player2.name}?"
+    puts "Who goes first, (1) #{self.player1.name}, (2) #{self.player2.name}, or (3) random?"
     name = gets.strip
-    if name == self.player1.name
-      set_as_first(self.player1)
-      set_as_second(self.player2)
+    if self.player1.name.downcase.include?(name.downcase) || name == "1"
+      player1_first
+    elsif self.player2.name.downcase.include?(name.downcase) || name == "2"
+      player2_first
     else
-      set_as_first(self.player2)
-      set_as_second(self.player1)
+      order = Random.rand(2)
+      if order == 0
+        player1_first
+      else
+        player2_first
+      end
     end
+  end
+
+  def player1_first
+    set_as_first(self.player1)
+    set_as_second(self.player2)
+  end
+
+  def player2_first
+    set_as_first(self.player2)
+    set_as_second(self.player1)
   end
 
   def set_as_first(player)
