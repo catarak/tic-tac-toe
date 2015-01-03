@@ -10,7 +10,7 @@ $ ./bin/tic_tac_toe -m [single, multiplayer]
 Other options are prompted during game play.
 
 ##Unbeatable AI strategy
-The AI chooses a move based on a hierarchy of types of moves. It plays the type of move that is highest on the following list:
+The AI iterates through a hierarchy of moves, starting with the one at the top. If that type of move exists, it plays that. Otherwise, if checks if the next type of move is possible, and so on.
 
 1. __Win__: If the computer player can make three in a row, it does.
 2. __Block__: If the opponent has two in a row, the computer blocks the opponent by placing its mark in the row.
