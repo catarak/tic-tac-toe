@@ -35,8 +35,6 @@ class HumanPlayer < Player
   end
 end
 
-#The AI for this is pretty dumb right now
-#TODO actually make this AI work
 class ComputerPlayer < Player
 
   def initialize
