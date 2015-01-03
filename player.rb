@@ -43,39 +43,15 @@ class ComputerPlayer < Player
     super("Computer")
   end
 
-  #this should also be cleaned up
 	def move(board)
-    move = find_winning_move(board)
-    return move if !move.nil?
-    move = find_blocking_move(board)
-    return move if !move.nil?
-
-    #strategy and all of that shit
-
-    #fork move
-    move = find_winning_fork_move(board)
-    return move if !move.nil?
-    #block opponent fork move
-    move = find_blocking_fork_move(board)
-    return move if !move.nil?
-
-    #center
-    move = find_center_move(board)
-    return move if !move.nil?
-
-    #opposite corner
-    move = find_opposite_corner(board)
-    return move if !move.nil?
-
-    #empty corner
-    move = find_empty_corner(board)
-    return move if !move.nil?
-
-    #empty side
-    move = find_empty_side(board)
-    return move if !move.nil?
-
-    Random.rand(9)
+    move = find_winning_move(board) || 
+           find_blocking_move(board) ||
+           find_winning_fork_move(board) ||
+           find_blocking_fork_move(board) ||
+           find_center_move(board) ||
+           find_opposite_corner(board) ||
+           find_empty_corner(board) ||
+           find_empty_side(board)
   end
 
   def find_winning_move(board)
@@ -133,17 +109,26 @@ class ComputerPlayer < Player
     possible_forks.each{ |fork| fork.sort! }.uniq
   end
 
+  def contains_fork?(board, mark)
+    two_in_a_row = []
+    board.rows.each do |row|
+      if board.only_two_in_a_row?(row, mark)
+        two_in_a_row << row
+      end
+    end
+    return two_in_a_row.length > 1
+  end
+
   def select_blocking_fork_move(board, possible_forks)
     possible_moves = possible_forks.flatten.uniq.select{ |index| board.valid?(index) }
-    #iterate through possible moves
-    #if move can create two in a row for self AND other player blocking doesn't create fork, then choose it
     possible_moves.each do |move|
+      #binding.pry
       test_board = Marshal.load(Marshal.dump(board))
       test_board.set(move, self.mark)
       opponent_move = find_winning_move(test_board)
       if opponent_move
         test_board.set(opponent_move, self.opponent_mark)
-        if find_possible_forks(test_board, self.opponent_mark).length == 0
+        if !contains_fork?(test_board, self.opponent_mark)
           return move
         end
       end
@@ -186,9 +171,6 @@ class ComputerPlayer < Player
         found_move = true
       end
     end
-    binding.pry
     move
   end
-
-
 end
