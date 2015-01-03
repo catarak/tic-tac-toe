@@ -1,5 +1,3 @@
-require 'pry'
-
 class Player
   attr_accessor :player_type, :score, :name, :mark
   attr_reader :mark, :opponent_mark
