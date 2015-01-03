@@ -111,6 +111,12 @@ class ComputerPlayer < Player
   end
 
   def find_blocking_fork_move(board)
+    possible_forks = find_possible_forks(board, self.opponent_mark)
+    select_blocking_fork_move(board, possible_forks)
+  end
+
+  def find_possible_forks(board, mark)
+    possible_forks = []
     board.rows.each do |row|
       if board.only_one_in_a_row?(row, self.opponent_mark)
         overlaps = board.overlapping_rows(row)
@@ -118,11 +124,27 @@ class ComputerPlayer < Player
           if board.only_one_in_a_row?(overlap, self.opponent_mark)
             overlapping_move = (overlap & row).first
             if board.valid?(overlapping_move)
-              #confirmed that an opponent fork, is in fact, possible
-              possible_moves = row.dup.concat(overlap).uniq.select{ |move| board.valid?(move) && move != overlapping_move}
-              return possible_moves.sample
+              possible_forks << [row, overlap]
             end
           end
+        end
+      end
+    end
+    possible_forks.each{ |fork| fork.sort! }.uniq
+  end
+
+  def select_blocking_fork_move(board, possible_forks)
+    possible_moves = possible_forks.flatten.uniq.select{ |index| board.valid?(index) }
+    #iterate through possible moves
+    #if move can create two in a row for self AND other player blocking doesn't create fork, then choose it
+    possible_moves.each do |move|
+      test_board = Marshal.load(Marshal.dump(board))
+      test_board.set(move, self.mark)
+      opponent_move = find_winning_move(test_board)
+      if opponent_move
+        test_board.set(opponent_move, self.opponent_mark)
+        if find_possible_forks(test_board, self.opponent_mark).length == 0
+          return move
         end
       end
     end
@@ -157,10 +179,15 @@ class ComputerPlayer < Player
   end
 
   def find_empty_side(board)
-    #TODO make this random :D
-    board.side_indices.each do |index|
-      return index if board.valid?(index)
+    found_move = false
+    while !found_move
+      move = board.side_indices.sample
+      if board.valid?(move)
+        found_move = true
+      end
     end
+    binding.pry
+    move
   end
 
 
