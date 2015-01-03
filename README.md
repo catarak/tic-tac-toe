@@ -1,8 +1,6 @@
-#Command Line Tic Tac Toe
+#Command Line Tic-Tac-Toe
 
-This game of Tic Tac Toe is either single or multiplayer, depending on user
-specifications. If there is only one player, the opponent is a computer, 
-whose AI is unbeatable.
+This game of Tic-Tac-Toe is either single or multiplayer, depending on user specifications. If there is only one player, the opponent is a computer, whose AI I designed to be unbeatable. You can try to beat it all you want, but it is futile.
 
 ##How To Play
 ```bash
