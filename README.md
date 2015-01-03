@@ -11,6 +11,7 @@ Other options are prompted during game play.
 
 ##Unbeatable AI strategy
 The AI chooses a move based on a hierarchy of types of moves. It plays the type of move that is highest on the following list:
+
 1. __Win__: If the computer player can make three in a row, it does.
 2. __Block__: If the opponent has two in a row, the computer blocks the opponent by placing its mark in the row.
 3. __Fork__: Creates two threats to win, or two rows with two marks in each row.
