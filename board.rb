@@ -35,7 +35,6 @@ class Board
   end
 
   def valid?(index)
-    return false if index.nil?
     return false if index < 0
     !self.board[index].nil? && self.board[index] != 'X' && self.board[index] != 'O'  
   end
