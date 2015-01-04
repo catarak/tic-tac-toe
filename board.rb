@@ -8,6 +8,10 @@ class Board
              [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
   end
 
+  def position_numbers
+    return *(1..9).collect { |x| x.to_s }
+  end
+
   #this isn't super pretty, I tried to find a way to do it with
   #a block but it was even messier
   def to_s
@@ -28,10 +32,6 @@ class Board
 
   def get(index)
   	return self.board[index]
-  end
-
-  def position_numbers
-    return *(1..9).collect { |x| x.to_s }
   end
 
   def valid?(index)

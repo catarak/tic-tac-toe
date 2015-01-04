@@ -146,6 +146,7 @@ class ComputerPlayer < Player
   end
 
   def find_empty_corner(board)
+    return nil if board.corner_indices.none?{ |index| board.valid?(index) }
     found_move = false
     while !found_move
       move = board.corner_indices.sample
@@ -157,6 +158,7 @@ class ComputerPlayer < Player
   end
 
   def find_empty_side(board)
+    return nil if board.side_indices.none?{ |index| board.valid?(index) }
     found_move = false
     while !found_move
       move = board.side_indices.sample
