@@ -115,13 +115,17 @@ class ComputerPlayer < Player
   def select_blocking_fork_move(board, possible_forks)
     possible_moves = possible_forks.flatten.uniq.select{ |index| board.valid?(index) }
     possible_moves.each do |move|
-      #binding.pry
       test_board = Marshal.load(Marshal.dump(board))
       test_board.set(move, self.mark)
       opponent_move = find_winning_move(test_board)
-      if opponent_move
+      if opponent_move 
         test_board.set(opponent_move, self.opponent_mark)
         if !contains_fork?(test_board, self.opponent_mark)
+          return move
+        end
+      else
+        test_board.set(opponent_move, (opponent_move + 1).to_s)
+        if find_possible_forks(test_board, self.opponent_mark).length == 0
           return move
         end
       end
