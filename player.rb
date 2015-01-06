@@ -124,7 +124,7 @@ class ComputerPlayer < Player
           return move
         end
       else
-        test_board.set(opponent_move, (opponent_move + 1).to_s)
+        #test_board.set(opponent_move, (opponent_move + 1).to_s)
         if find_possible_forks(test_board, self.opponent_mark).length == 0
           return move
         end
