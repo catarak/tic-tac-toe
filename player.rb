@@ -33,13 +33,14 @@ class HumanPlayer < Player
 end
 
 class ComputerPlayer < Player
+  INITIAL_DEPTH = 2
 
   def initialize
     super("Computer")
   end
 
 	def move(board)
-    value = minimax(board, 2, self.mark, Fixnum::MIN, Fixnum::MAX)[:position]
+    value = minimax(board, INITIAL_DEPTH, self.mark, Fixnum::MIN, Fixnum::MAX)[:position]
   end
 
   def minimax(board, depth, mark, alpha, beta)
