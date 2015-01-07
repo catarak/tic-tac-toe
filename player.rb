@@ -1,3 +1,10 @@
+class Fixnum
+  N_BYTES = [42].pack('i').size
+  N_BITS = N_BYTES * 8
+  MAX = 2 ** (N_BITS - 2) - 1
+  MIN = -MAX - 1
+end
+
 class Player
   attr_accessor :player_type, :score, :name, :mark
   attr_reader :mark, :opponent_mark
@@ -37,14 +44,62 @@ class ComputerPlayer < Player
   end
 
 	def move(board)
-    move = find_winning_move(board) || 
-           find_blocking_move(board) ||
-           find_winning_fork_move(board) ||
-           find_blocking_fork_move(board) ||
-           find_center_move(board) ||
-           find_opposite_corner(board) ||
-           find_empty_corner(board) ||
-           find_empty_side(board)
+    value = minimax(board, 2, self.mark, Fixnum::MIN, Fixnum::MAX)[:position]
+  end
+
+  def minimax(board, depth, mark, alpha, beta)
+    best_position = -1
+    if depth == 0 || board.open_positions.empty?
+      score = evaluate_score(board)
+      return {score: score, position: best_position}
+    else
+      board.open_positions.each do |index|
+        board.set(index, mark)
+        if mark == self.mark
+          score = minimax(board, depth - 1, self.opponent_mark, alpha, beta)[:score]
+          if score > alpha
+            alpha = score
+            best_position = index
+          end
+        else
+          score = minimax(board, depth - 1, self.mark, alpha, beta)[:score]
+          if score < beta
+            beta = score
+            best_position = index
+          end
+        end
+        board.clear_position(index)
+        if alpha >= beta
+          break
+        end
+      end
+    end
+    best_score = self.mark == mark ? alpha : beta
+    {score: best_score, position: best_position}
+  end
+
+  def evaluate_score(board)
+    board.rows.inject(0) do |score, row| 
+      score + evaluate_score_for_row(board, row)
+    end
+  end
+
+  def evaluate_score_for_row(board, row)
+    if board.three_in_a_row_for_mark?(row, self.mark)
+      100
+    elsif board.three_in_a_row_for_mark?(row, self.opponent_mark)
+      -100
+    elsif board.only_two_in_a_row?(row, self.mark)
+      10
+    elsif board.only_two_in_a_row?(row, self.opponent_mark)
+      -10
+    elsif board.only_one_in_a_row?(row, self.mark)
+      1
+    elsif board.only_one_in_a_row?(row, self.opponent_mark)
+      -1
+    else
+      0
+    end
   end
 
   def find_winning_move(board)
@@ -124,7 +179,7 @@ class ComputerPlayer < Player
           return move
         end
       else
-        test_board.set(opponent_move, (opponent_move + 1).to_s)
+        #test_board.set(opponent_move, (opponent_move + 1).to_s)
         if find_possible_forks(test_board, self.opponent_mark).length == 0
           return move
         end

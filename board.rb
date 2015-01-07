@@ -1,3 +1,5 @@
+require 'pry'
+
 class Board
   attr_accessor :board
   attr_reader :rows
@@ -39,6 +41,14 @@ class Board
     !self.board[index].nil? && self.board[index] != 'X' && self.board[index] != 'O'  
   end
 
+  def open_positions
+    self.board.select{ |index| self.valid?(index.to_i - 1) }.map{ |value| board.index(value)}
+  end
+
+  def clear_position(index)
+    self.set(index, (index + 1).to_s)
+  end
+
   def center_index
     return 4
   end
@@ -65,6 +75,10 @@ class Board
 
   def only_one_in_a_row?(row, mark)
     num_mark_in_row(row, mark) == 1 && num_open_positions(row) == 2
+  end
+
+  def three_in_a_row_for_mark?(row, mark)
+    num_mark_in_row(row, mark) == 3
   end
 
   def get_open_position(row)
