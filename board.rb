@@ -49,22 +49,6 @@ class Board
     self.set(index, (index + 1).to_s)
   end
 
-  def center_index
-    return 4
-  end
-
-  def corner_indices
-    return [0, 2, 6, 8]
-  end
-
-  def side_indices
-    return [1, 3, 5, 7]
-  end
-
-  def opposite_corner_index(index)
-    OPPOSITE_CORNERS[index]
-  end
-
   def values(row)
     [self.get(row[0]), self.get(row[1]), self.get(row[2])]
   end
@@ -94,10 +78,6 @@ class Board
     values.select{ |value| value == mark }.length
   end
 
-  def overlapping_rows(row)
-    self.rows.select{ |overlap| (overlap & row).length > 0 && overlap != row }
-  end
-
   def three_in_a_row?(row)
     self.values(row).uniq.length == 1
   end
@@ -109,15 +89,4 @@ class Board
     false
   end
 
-  def opposite_mark(mark)
-    mark == "X" ? "O" : "X"
-  end
-
-  private
-    OPPOSITE_CORNERS = {
-      0 => 8, 
-      2 => 6,
-      6 => 2, 
-      8 => 0
-    }
 end
