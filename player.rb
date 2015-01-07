@@ -1,9 +1,4 @@
-class Fixnum
-  N_BYTES = [42].pack('i').size
-  N_BITS = N_BYTES * 8
-  MAX = 2 ** (N_BITS - 2) - 1
-  MIN = -MAX - 1
-end
+require_relative 'fixnum'
 
 class Player
   attr_accessor :player_type, :score, :name, :mark
@@ -85,9 +80,9 @@ class ComputerPlayer < Player
   end
 
   def evaluate_score_for_row(board, row)
-    if board.three_in_a_row_for_mark?(row, self.mark)
+    if board.three_in_a_row?(row, self.mark)
       100
-    elsif board.three_in_a_row_for_mark?(row, self.opponent_mark)
+    elsif board.three_in_a_row?(row, self.opponent_mark)
       -100
     elsif board.only_two_in_a_row?(row, self.mark)
       10

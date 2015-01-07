@@ -1,5 +1,3 @@
-require 'pry'
-
 class Board
   attr_accessor :board
   attr_reader :rows
@@ -61,7 +59,7 @@ class Board
     num_mark_in_row(row, mark) == 1 && num_open_positions(row) == 2
   end
 
-  def three_in_a_row_for_mark?(row, mark)
+  def three_in_a_row?(row, mark)
     num_mark_in_row(row, mark) == 3
   end
 
@@ -78,15 +76,14 @@ class Board
     values.select{ |value| value == mark }.length
   end
 
-  def three_in_a_row?(row)
+  def winning_row?(row)
     self.values(row).uniq.length == 1
   end
 
   def has_winner?
     self.rows.each do |row|
-      return true if three_in_a_row?(row)
+      return true if winning_row?(row)
     end
     false
   end
-
 end
